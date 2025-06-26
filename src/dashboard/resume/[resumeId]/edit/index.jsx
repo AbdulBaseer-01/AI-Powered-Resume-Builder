@@ -25,7 +25,6 @@ function EditResume() {
     <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
   <div className="grid grid-cols-1 md:grid-cols-2 p-5 gap-3 mt-20">
 
-    {/* Left: Form */}
     <div className="w-full">
       <FormSection />
     </div>

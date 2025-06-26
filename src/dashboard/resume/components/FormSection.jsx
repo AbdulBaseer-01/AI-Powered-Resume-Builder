@@ -20,7 +20,7 @@ function FormSection() {
         <div className='flex justify-between items-center'>
           <div className='flex items-center gap-5'>
             <Link to={"/dashboard"}>
-          <Button variant='outline' size='sm'><Home/></Button>
+          <Button variant='outline' size='sm'>My Resumes</Button>
           </Link>
           <ThemeSelector/>
          

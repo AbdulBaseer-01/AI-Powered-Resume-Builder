@@ -26,10 +26,10 @@ function ViewResume() {
   };
 
   return (
-    <div className=" mt-20 ">
+    <div className="  ">
       <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
-        <div id="no-print">
-          <Header />
+        <div id="no-print" className='flex flex-col justify-center items-center'>
+          <Header/>
           <div className="">
             <h2 className="text-center text-2xl font-medium">
               Congrats! Your Ultimate AI generated Resume is ready!
@@ -43,7 +43,7 @@ function ViewResume() {
           </div>
         </div>
 
-        <div >
+        <div className='flex justify-center'>
           <div ref={printAreaRef} id="print-area">
             <ResumePreview  />
           </div>

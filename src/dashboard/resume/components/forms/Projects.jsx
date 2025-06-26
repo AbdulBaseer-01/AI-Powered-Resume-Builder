@@ -35,7 +35,7 @@
 //     setProjectsList([
 //       ...projectsList,
 //       {
-//         type: '', // default type
+//         type: '',
 //         projectName: '',
 //         technologiesUsed: '',
 //         description: '',

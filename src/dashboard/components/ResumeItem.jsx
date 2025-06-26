@@ -20,35 +20,60 @@ import {
 import GlobalApi from './../../../service/GlobalApi'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import ResumePreview from '../resume/components/ResumePreview'
+import  {  useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { ResumeInfoContext } from '../../context/ResumeInfoContext'
 
 function ResumeItem({ resume, refreshData }) {
   const navigate = useNavigate();
   const [openAlert, setOpenAlert] = useState(false);
   const [loading, setLoading] = useState(false);
   const onDelete = async () => {
-  try {
-    setLoading(true);
-    await GlobalApi.DeleteResumeById(resume.documentId); 
-    toast.success("Resume deleted successfully");
-    setOpenAlert(false);
-    refreshData(); 
-  } finally {
-    setLoading(false);
-    window.location.reload()
-  }
-};
+    try {
+      setLoading(true);
+      await GlobalApi.DeleteResumeById(resume.documentId); 
+      toast.success("Resume deleted successfully");
+      setOpenAlert(false);
+      refreshData(); 
+    } finally {
+      setLoading(false);
+      window.location.reload()
+    }
+  };
 
+    const [resumeInfo, setResumeInfo] = useState();
+    const { resumeId } = useParams();
+    useEffect(() => {
+      if (resume?.documentId) {
+      GlobalApi.GetResumebyId(resume.documentId).then((resp) => {
+        setResumeInfo(resp.data.data);
+      });
+      }
+    }, [resume?.documentId]);
+
+  
+    const GetResumeInfo = () => {
+      GlobalApi.GetResumebyId(resumeId).then((resp) => {
+        setResumeInfo(resp.data.data);
+      });
+    };
 
   return (
+    
     <Card className="rounded-2xl shadow-2xl border bg-black border-gray-800 hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)] transition duration-300 group overflow-hidden max-w-sm w-full">
   <div className="relative">
-    <Link to={`/dashboard/resume/${resume.documentId}/edit`}>
+    <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
+    
       <div className="h-[180px] flex items-center justify-center bg-gradient-to-br from-[#f9f9ff] via-[#ffffff] to-[#eef5ff]">
-        <FileText className="text-primary group-hover:scale-110 transition-transform duration-300" size={40} />
+        
+        <div className='transform scale-25 rounded-lg'>
+          <ResumePreview/>
+        </div>
       </div>
-    </Link>
+    </ResumeInfoContext.Provider>
   </div>
-
+<Link to={`/dashboard/resume/${resume.documentId}/edit`}>
   <CardContent className="p-0">
     <CardHeader
       className="flex justify-between items-center mt-4 px-4 py-3 rounded-t-lg"
@@ -75,6 +100,7 @@ function ResumeItem({ resume, refreshData }) {
         </DropdownMenuContent>
       </DropdownMenu>
     </CardHeader>
+    
 
     <CardContent
       className="px-4 pb-4 text-white text-xs italic rounded-b-lg"
@@ -83,7 +109,7 @@ function ResumeItem({ resume, refreshData }) {
       Last updated: {new Date(resume.updatedAt || Date.now()).toLocaleDateString()}
     </CardContent>
   </CardContent>
-
+</Link>
   <AlertDialog open={openAlert}>
     <AlertDialogContent>
       <AlertDialogHeader>
